@@ -3,7 +3,7 @@ const expect = require("chai").expect;
 /* eslint-disable no-undef */
 const { LinkedList, joinLinkedList } = require("../checkpoint.js");
 
-xdescribe("EJERCICIO 3: Join Linked List", function () {
+describe("EJERCICIO 3: Join Linked List", function () {
   var linkedList = new LinkedList();
 
   it("EJERCICIO 3: joinLinkedList debe devolver una nueva lista a partir de las originales", function () {
