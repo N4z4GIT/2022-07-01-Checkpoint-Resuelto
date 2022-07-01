@@ -40,7 +40,27 @@ LinkedList.prototype.orderList = function () {
 // myList = Head --> [4] --> [3] --> [2] --> [1]
 LinkedList.prototype.reverseLinkedList = function () {
   // Tu código aca:
-};
+  let current;
+  let current2; 
+
+  if (this.head === null) { 
+    return false;
+  } else {
+      current = this.head; 
+      while (current.next) { 
+        current2 = current.next; 
+        while (current2) { 
+          if (current.value < current2.value) { 
+            const aux = current.value;               
+            current.value = current2.value;
+            current2.value = aux;
+          }
+          current2 = current2.next;
+        }
+        current = current.next; 
+      }
+    }
+  };
 
 // EJERCICIO 3
 // Implementar la función joinLinkedLists que, a partir de dos listas simplemente enlazadas
@@ -52,6 +72,20 @@ LinkedList.prototype.reverseLinkedList = function () {
 //    Head --> [2] --> [6] --> [8] --> [15] --> [22] --> [4] --> null
 function joinLinkedList(linkedListOne, linkedListTwo) {
   // Tu código aca:
+  var mergelist= function(linkedListOne, linkedListTwo){
+  let newlist= new LinkedList();
+  while(linkedListOne.length||linkedListTwo.length){
+    if(linkedListOne){
+      let first=linkedListOne.remove();
+      newlist.add(first);
+    }
+    if(linkedListTwo){
+      let second=linkedListTwo.remove();
+      newlist.add(second);
+    }
+  }
+  return newlist;
+}
 }
 
 // ---- Arboles Binarios ----
@@ -66,7 +100,22 @@ function joinLinkedList(linkedListOne, linkedListTwo) {
 //      \
 //       5
 //  Debería retornarnos 2
-BinarySearchTree.prototype.searchMin = function () {};
+BinarySearchTree.prototype.searchMin = function () {
+  let result;
+  if (!this.left)return this.value;
+  if(this.left){
+    return this.left.searchMin();
+  }
+  if (!this.left){
+    result= this.left.value;
+  }
+  return result;
+
+}
+
+
+
+
 
 // EJERCICIO 5
 // Implementar la función createBST para que a partir de un array recibido como parametro
@@ -92,8 +141,20 @@ function createBST(array) {
 // La función passport retorna una función isAllowed, la cual recibirá un arreglo de personas que quieren ingresar al país, y retornará un nuevo arreglo con los admitidos (aquellos que cumplan con la edad requerida).
 function passport(minAge, country) {
   // Tu código aca:
-}
+  return function(){
+    let admitidos=[];
+    if(minAge>=18&&country===country){
+     admitidos.push(minAge, country);
+  return admitidos;
+    }
+    else if (admitidos===0||minAge<18){
+      return false;
+    }
+  
+  }
 
+
+}
 // ---- Recursión ----
 // EJERCICIO 7
 // La función countDeep recibe por parámetro un arreglo que contiene números y/o arreglos (estos últimos contienen, a su vez, más números y/o arreglos), y retorna la cantidad de arreglos que hay en total, incluyendo al padre.
@@ -101,7 +162,21 @@ function passport(minAge, country) {
 // countDeep( [ 1, 2, 3, [ 4, [ 5, 6 ] ], 7, [ 8 ], 9] ) ----> Debería retornar 4
 function countDeep(arr) {
   // Tu código aca:
+  let suma = 0;
+
+  for (let i = 0; i < arr.length; i++) {
+
+    if (Array.isArray(arr[i])) {
+
+      suma += countDeep(arr[i]);
+
+  }
 }
+return arr.length;
+
+};
+  
+
 
 // EJERCICIO 8
 // Implementar la función isAncestor: debe determinar si dado dos nombres de personas las mismas
@@ -123,7 +198,12 @@ function countDeep(arr) {
 //  - Caso que devuelve false --> isAncestor(genealogyTree, "Jacqueline Bouvier", "Abigail Simpson")
 //  [Observar los tests para otros casos]
 var isAncestor = function (genealogyTree, ancestor, descendant) {
+
   // Tu código aca:
+  if(genealogyTree.ancestor===descendant){
+  return true;
+  }else 
+  return false;
 };
 
 // ---- Queue ----
@@ -185,6 +265,22 @@ function cardGame(playerOneCards, playerTwoCards) {
 // ]
 function specialSort(array, swapFunction) {
   // Tu código aca:
+ var invertir = true;
+ while(invertir){
+  swap= false;
+  for(var i=0;i<array.length;i++){
+    if(!array[i+1]){
+      if(swapFunction(array[i], array[i+1])=== -1){
+        var aux = array[i];
+        array[i]=array[i+1];
+        array[i+1]=aux;
+        invertir = true;
+      }
+    }
+  }
+
+ }
+ return array;
 }
 
 module.exports = {
