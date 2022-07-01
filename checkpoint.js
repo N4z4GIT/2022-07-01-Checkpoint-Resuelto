@@ -10,7 +10,27 @@ const { Queue, Node, Stack, LinkedList, BinarySearchTree } = require("./DS.js");
 // ACLARACIÓN: Se debe ordenar la lista original y no una nueva.
 LinkedList.prototype.orderList = function () {
   // Tu código aca:
-};
+  let current;
+  let current2; 
+
+  if (this.head === null) { 
+    return false;
+  } else {
+      current = this.head; 
+      while (current.next) { 
+        current2 = current.next; 
+        while (current2) { 
+          if (current.value > current2.value) { 
+            const aux = current.value;               
+            current.value = current2.value;
+            current2.value = aux;
+          }
+          current2 = current2.next;
+        }
+        current = current.next; 
+      }
+    }
+  };
 
 // EJERCICIO 2
 // Agregar al prototipo de LinkedList un método reverseLinkedList que invierta el orden de los elementos de la lista.
