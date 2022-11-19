@@ -72,20 +72,19 @@ LinkedList.prototype.reverseLinkedList = function () {
 //    Head --> [2] --> [6] --> [8] --> [15] --> [22] --> [4] --> null
 function joinLinkedList(linkedListOne, linkedListTwo) {
   // Tu código aca:
-  var mergelist= function(linkedListOne, linkedListTwo){
-  let newlist= new LinkedList();
-  while(linkedListOne.length||linkedListTwo.length){
-    if(linkedListOne){
-      let first=linkedListOne.remove();
-      newlist.add(first);
-    }
-    if(linkedListTwo){
-      let second=linkedListTwo.remove();
-      newlist.add(second);
-    }
+
+let current = linkedListOne.head;
+  let current2 = linkedListTwo.head;
+  let newList = new LinkedList();
+
+  while(current && current2) {
+  
+    newList.add (current.value);
+    newList.add (current2.value);
+    current = current.next;
+    current2 = current2.next;
   }
-  return newlist;
-}
+  return newList;
 }
 
 // ---- Arboles Binarios ----
@@ -131,7 +130,36 @@ BinarySearchTree.prototype.searchMin = function () {
 //       5
 function createBST(array) {
   // Tu código aca:
+    var tree= new BinarySearchTree(array[0])
+    for(let i =1;i<array.length;i++){
+      tree.insert(array[i])
+    }
+    return tree;
+  }
+  
+  
+    BinarySearchTree.prototype.insert = function(value) {
+  
+      if(value < this.value){
+        if(this.left === null){
+          var newTree = new BinarySearchTree(value);
+          this.left = newTree;
+        } else {
+          this.left.insert(value);
+        }
+      } else {
+        if(this.right === null){
+          var newTree = new BinarySearchTree(value);
+          this.right = newTree;
+        } else {
+          this.right.insert(value);
+        }
+      }
+
 }
+   
+ 
+
 
 // ----- Closures -----
 // EJERCICIO 6
@@ -141,20 +169,36 @@ function createBST(array) {
 // La función passport retorna una función isAllowed, la cual recibirá un arreglo de personas que quieren ingresar al país, y retornará un nuevo arreglo con los admitidos (aquellos que cumplan con la edad requerida).
 function passport(minAge, country) {
   // Tu código aca:
-  return function(){
-    let admitidos=[];
-    if(minAge>=18&&country===country){
-     admitidos.push(minAge, country);
-  return admitidos;
-    }
-    else if (admitidos===0||minAge<18){
-      return false;
-    }
-  
+  if ( minAge < 18) {
+    return false;
+  }
+  return function isAllowed (personas) { 
+    let admitidos = [];
+
+    for (let i=0;i<personas.length;i++) {
+      if(personas[i].age>=minAge&&personas[i].allowed[0]===country){
+        admitidos.push(personas[i])
+
+        }
+      }
+    
+      if(admitidos.length===0){
+        return false;
+      }
+      return admitidos;
   }
 
+     
 
-}
+};
+
+    
+  
+
+ 
+ 
+  
+
 // ---- Recursión ----
 // EJERCICIO 7
 // La función countDeep recibe por parámetro un arreglo que contiene números y/o arreglos (estos últimos contienen, a su vez, más números y/o arreglos), y retorna la cantidad de arreglos que hay en total, incluyendo al padre.
@@ -200,10 +244,17 @@ return arr.length;
 var isAncestor = function (genealogyTree, ancestor, descendant) {
 
   // Tu código aca:
-  if(genealogyTree.ancestor===descendant){
-  return true;
-  }else 
+  if(genealogyTree.hasOwnProperty(ancestor)){
+    if(genealogyTree[ancestor].includes(descendant)) return true;
+    for(let elem of genealogyTree[ancestor]){
+      if (isAncestor(genealogyTree,elem,descendant)) return true;
+    }
+  }
   return false;
+
+
+  
+      
 };
 
 // ---- Queue ----
@@ -244,6 +295,21 @@ var isAncestor = function (genealogyTree, ancestor, descendant) {
 // finalizar el juego.
 function cardGame(playerOneCards, playerTwoCards) {
   // Tu código aca:
+  var puntos1 = 100;
+  var puntos2 = 100;
+  var cartasJugador1;
+  var cartasJugador2;
+  while (puntos1 > 0 && puntos2 > 0&&playerOneCards.size()>0&&playerTwoCards.size()>0) {
+    cartasJugador1 = playerOneCards.dequeue();
+    cartasJugador2 = playerTwoCards.dequeue();
+    if (cartasJugador1.attack > cartasJugador2.defense) {puntos2 = puntos2 - (cartasJugador1.attack);}
+    if (cartasJugador2.attack > cartasJugador1.defense) {puntos1 = puntos1 - (cartasJugador2.attack);}
+
+  if (puntos1 > puntos2) {return 'PLAYER ONE';}
+  if (puntos2 > puntos1) {return 'PLAYER TWO';} 
+  if (puntos1 === puntos2) {return 'TIE';}
+  }
+   
 }
 
 // ---- Algoritmos ----
@@ -267,21 +333,38 @@ function specialSort(array, swapFunction) {
   // Tu código aca:
  var invertir = true;
  while(invertir){
-  swap= false;
+  invertir = false;
   for(var i=0;i<array.length;i++){
-    if(!array[i+1]){
-      if(swapFunction(array[i], array[i+1])=== -1){
+    if(array[i+1]!=null){
+      if(swapFunction(array[i], array[i+1])==-1){
         var aux = array[i];
         array[i]=array[i+1];
         array[i+1]=aux;
         invertir = true;
       }
+      
     }
   }
 
  }
- return array;
+return array;
 }
+// var swap = true;
+//   while (swap) {
+//     swap = false;
+//     for (var i = 0; i < array.length; i++) {
+//       if (array[i + 1] != null) {
+//         if (swapFunction(array[i], array[i + 1]) == -1) {
+//           var aux = array[i];
+//           array[i] = array[i + 1];
+//           array[i + 1] = aux;
+//           swap = true;
+//         }
+//       }
+//     }
+//   }
+//   return array;
+// }
 
 module.exports = {
   passport,
